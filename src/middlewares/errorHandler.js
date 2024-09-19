@@ -1,6 +1,6 @@
 import { HttpError } from 'http-errors';
 
-const errorHandlerMiddleware = (err, req, res, next) => {
+export const errorHandlerMiddleware = (err, req, res, next) => {
   if (err instanceof HttpError) {
     res.status(err.status).json({
       status: err.status,
@@ -16,5 +16,3 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     data: err.message,
   });
 };
-
-export default errorHandlerMiddleware;
