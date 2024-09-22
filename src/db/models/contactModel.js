@@ -24,7 +24,7 @@ const contactsShema = new Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true, versionKey: false },
 );
 
 export const ContactsCollection = model('contacts', contactsShema);
