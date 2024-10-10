@@ -4,6 +4,7 @@ import {
   logoutUser,
   refreshUsersSession,
   registerUser,
+  sendResetToken,
 } from '../services/auth.js';
 
 export const registerUserController = async (req, res) => {
@@ -76,5 +77,15 @@ export const refreshUserSessionController = async (req, res) => {
     data: {
       accessToken: session.accessToken,
     },
+  });
+};
+
+//контролер, який буде обробляти запит на зміну пароля
+export const sendResetEmailController = async (req, res) => {
+  await sendResetToken(req.body.email);
+  res.json({
+    message: 'Reset password email was successfully sent.',
+    status: 200,
+    data: {},
   });
 };
