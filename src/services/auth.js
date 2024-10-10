@@ -6,11 +6,18 @@ import {
   ACCESS_TOKEN_LIVE_TIME,
   REFRESH_TOKEN_LIVE_TIME,
   SMTP,
+  TEMPLATES_DIR,
 } from '../constants/index.js';
+
 import { randomBytes } from 'crypto';
+
 import jwt from 'jsonwebtoken';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
+
+import handlebars from 'handlebars';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 
 export const registerUser = async (payload) => {
   let user = await User.findOne({ email: payload.email });
@@ -111,12 +118,29 @@ export const sendResetToken = async (email) => {
       expiresIn: '5m',
     },
   );
+
+  const resetPasswordTemplatePath = path.join(
+    TEMPLATES_DIR,
+    'reset-password-email.html',
+  );
+
+  const templateSource = (
+    await fs.readFile(resetPasswordTemplatePath)
+  ).toString();
+
+  const template = handlebars.compile(templateSource);
+
+  const html = template({
+    name: user.name,
+    link: `http://localhost:3000/reset-password?token=${resetToken}`,
+  });
+
   try {
     await sendEmail({
       from: env(SMTP.SMTP_FROM),
       to: email,
       subject: 'Reset your password',
-      html: `<p>Click <a href="http://localhost:3000/reset-password?token=${resetToken}">here</a> to reset your password!</p>`,
+      html,
     });
   } catch (error) {
     console.error(error);
