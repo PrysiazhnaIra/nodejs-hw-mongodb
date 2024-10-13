@@ -1,10 +1,12 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import contactsRouter from './routers/contacts.js';
+import router from './routers/index.js';
 import { env } from './utils/env.js';
 import { notFoundMiddleware } from './middlewares/notFoundHandler.js';
 import { errorHandlerMiddleware } from './middlewares/errorHandler.js';
+import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -28,7 +30,11 @@ export const setupServer = () => {
     }),
   );
 
+  app.use('/uploads', express.static(UPLOAD_DIR));
+
   app.use(cors());
+
+  app.use(cookieParser());
 
   app.get('/', (req, res) => {
     res.json({
@@ -36,7 +42,7 @@ export const setupServer = () => {
     });
   });
 
-  app.use(contactsRouter);
+  app.use(router);
 
   app.use('*', notFoundMiddleware);
 
