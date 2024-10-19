@@ -1,0 +1,39 @@
+type: object
+required:
+  - _id
+  - name
+  - phoneNumber
+  - contactType
+properties:
+  _id:
+    description: "Contacts's id"
+    type: string
+    example: 65e4decdd286b30065d54af9
+  name:
+    description: "Contact's name"
+    type: string
+    example: 'John Doe'
+  phoneNumber:
+    description: "Contacts's phone number"
+    type: string
+    example: +380000000001
+  contactType:
+    description: "Contact's type"
+    type: string
+    enum: ['work', 'home', 'personal']
+  email:
+    description: "Contact's email"
+    type: string
+    example: oleh1@example.com
+  isFavourite:
+    description: 'Whether is contact favourite'
+    type: boolean
+    example: false
+  userId:
+    description: 'MongoDB ObjectId referencing the user'
+    type: string
+    example: 65e4decdd286b30065d54af9
+  photo:
+    description: "Link to contact's photo"
+    type: string
+    example: https://res.cloudinary.com/dqgqoymgz/image/upload/v1729251779/blqlhbzacim56d6zg2lb.png
