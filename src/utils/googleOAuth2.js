@@ -21,6 +21,7 @@ const googleOAuthClient = new OAuth2Client({
 //Генерація URL для авторизації
 export const generateAuthUrl = () =>
   googleOAuthClient.generateAuthUrl({
+    //access_type: 'offline',
     scope: [
       'https://www.googleapis.com/auth/userinfo.email',
       'https://www.googleapis.com/auth/userinfo.profile',

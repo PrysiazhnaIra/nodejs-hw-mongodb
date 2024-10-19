@@ -1,0 +1,64 @@
+tags:
+  - Contacts
+summary: Create a new contact
+operationId: createContact
+description: 'Create a new contact for the authenticated user. Photo upload supported. Requires Bearer token authorization.'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - name
+          - phoneNumber
+          - contactType
+        properties:
+          name:
+            type: string
+            description: Name of the contact
+            example: 'John Doe'
+          email:
+            type: string
+            description: Email of the contact
+            example: 'john.doe@example.com'
+          phoneNumber:
+            type: string
+            description: Phone number of the contact
+            example: '+1234567890'
+          contactType:
+            type: string
+            description: Type of contact
+            enum: ['work', 'home', 'personal']
+            example: 'personal'
+          isFavourite:
+            type: boolean
+            description: Whether the contact is marked as favourite
+            example: true
+          photo:
+            type: string
+            format: binary
+            description: Photo file to upload (optional)
+responses:
+  '201':
+    description: 'Successfully created a contact!'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a contact!.
+            data:
+              $ref: '../../components/schemas/contact.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'

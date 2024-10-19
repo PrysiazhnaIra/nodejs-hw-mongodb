@@ -1,0 +1,69 @@
+tags:
+  - Contacts
+summary: Update a contact by ID
+operationId: updateContact
+description: 'Update a specific contact by its unique ID for the authenticated user. Photo upload supported. Requires Bearer token authorization.'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: contactId
+    required: true
+    description: The unique ID of the contact to update
+    schema:
+      type: string
+      example: '60d21b4567d0d8992e610b22'
+requestBody:
+  description: Contact data to update, with optional photo file upload
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Updated name of the contact
+            example: 'John Doe'
+          email:
+            type: string
+            description: Updated email of the contact
+            example: 'john.doe@example.com'
+          phoneNumber:
+            type: string
+            description: Updated phone number of the contact
+            example: '+1234567890'
+          contactType:
+            type: string
+            description: Updated type of contact (personal/business)
+            example: 'personal'
+          isFavourite:
+            type: boolean
+            description: Whether the contact is marked as favourite
+            example: true
+          photo:
+            type: string
+            format: binary
+            description: Photo file to upload (optional)
+responses:
+  '200':
+    description: 'Successfully patched a contact!'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully patched a contact!
+            data:
+              $ref: '../../../components/schemas/contact.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'
